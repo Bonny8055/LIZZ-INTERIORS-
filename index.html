@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lizz Interiors | VR Design & Construction Visualization</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #7e22ce;
+            --accent: #06b6d4;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --transition: all 0.3s ease;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Raleway', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #6b21a8;
+        }
+        
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: var(--accent);
+            font-size: 2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 2rem;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding-top: 70px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            opacity: 0;
+        }
+        
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            opacity: 0;
+        }
+        
+        /* 3D Model Viewer */
+        #model-viewer {
+            width: 100%;
+            height: 70vh;
+            position: relative;
+            background: #f0f0f0;
+            margin: 2rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        .model-nav {
+            display: flex;
+            justify-content: center;
+            background: var(--dark);
+            padding: 1rem 0;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            border-radius: 8px;
+        }
+        
+        .model-nav button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .model-nav button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .model-nav button.active {
+            color: var(--accent);
+        }
+        
+        .model-nav button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        /* Services Section */
+        .services {
+            padding: 6rem 0;
+            background-color: white;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .service-icon {
+            height: 200px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+        
+        .service-content {
+            padding: 2rem;
+        }
+        
+        .service-content h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Why VR Section */
+        .why-vr {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        
+        .benefits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .benefit-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .benefit-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        /* Video Section */
+        .video-section {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            text-align: center;
+        }
+        
+        .video-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .video-section h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+        }
+        
+        .video-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem auto;
+            flex-wrap: wrap;
+            max-width: 800px;
+        }
+        
+        .video-option-btn {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .video-option-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .video-option-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .video-container-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .video-thumbnail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .play-button {
+            position: relative;
+            z-index: 2;
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .play-button i {
+            font-size: 2rem;
+            color: white;
+            margin-left: 5px;
+        }
+        
+        .video-placeholder-text {
+            position: relative;
+            z-index: 2;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .video-placeholder:hover .video-thumbnail {
+            opacity: 0.6;
+        }
+        
+        .video-placeholder:hover .play-button {
+            transform: scale(1.1);
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        #yt-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-form {
+            background-color: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Raleway', sans-serif;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .contact-info {
+            padding: 1rem;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .contact-details {
+            margin-bottom: 2rem;
+        }
+        
+        .contact-details p {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .contact-details i {
+            color: var(--accent);
+            font-size: 1.2rem;
+            min-width: 24px;
+            margin-top: 4px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+        
+        .social-icon:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-col h3 {
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col ul li a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+        
+        .social-links-footer {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links-footer a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links-footer a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background: white;
+                padding: 1rem;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                clip-path: circle(0% at 100% 0%);
+                transition: var(--transition);
+            }
+            
+            nav.active {
+                clip-path: circle(150% at 100% 0%);
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 1rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fa-solid fa-vr-cardboard"></i>
+                <h1>LIZZ <span>INTERIORS</span></h1>
+            </div>
+            <div class="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#vr-viewer">VR Viewer</a></li>
+                    <li><a href="#why-vr">Why VR?</a></li>
+                    <li><a href="#videos">Videos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>See Your Dream Space <span class="highlight">Before</span> It's Built</h1>
+                <p>Lizz Interiors leverages cutting-edge Virtual Reality to revolutionize how India designs and builds. We specialize in complete interior design and construction visualization, bringing your vision to life with unprecedented clarity.</p>
+                <div class="hero-btns">
+                    <a href="#services" class="btn">Explore Our Services</a>
+                    <a href="#contact" class="btn btn-secondary">Book a VR Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <h2>Our VR-Powered Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>VR Interior Design Visualization</h3>
+                        <p>Step inside your redesigned living room, office, or restaurant. Explore finishes, furniture layouts, and lighting in true-to-life scale. Make changes on the fly before finalizing.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Complete Construction Visualization</h3>
+                        <p>Go beyond blueprints. Walk through every floor, room, and corridor of your future building during planning. Verify spatial relationships, MEP routing, and materials in immersive 3D.</p>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fa-solid fa-people-group"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Design & Build Coordination</h3>
+                        <p>Use our VR model as the central coordination tool throughout the construction process. Facilitate design reviews, contractor walkthroughs, and client approvals in shared VR.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VR Model Viewer Section -->
+    <section id="vr-viewer" class="container">
+        <h2>Experience Our VR Designs</h2>
+        <p class="text-center" style="margin-bottom: 2rem;">Walk through our immersive VR spaces. Select a room to explore:</p>
+        
+        <div id="model-viewer">
+            <div class="loading">Loading 3D Model...</div>
+        </div>
+        
+        <div class="model-nav">
+            <button class="active" data-model="home">Living Room</button>
+            <button data-model="hall">Hall</button>
+            <button data-model="bedroom">Bedroom</button>
+            <button data-model="kitchen">Kitchen</button>
+        </div>
+    </section>
+
+    <!-- Why VR Section -->
+    <section class="why-vr" id="why-vr">
+        <div class="container">
+            <h2>Why Choose VR with Lizz Interiors?</h2>
+            <div class="benefits-container">
+                <div class="benefit-card">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <h3>Cost Savings</h3>
+                    <p>Identify and resolve issues before construction begins, reducing costly change orders and rework by up to 40%.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <h3>Time Efficiency</h3>
+                    <p>Reduce design revisions and construction delays with real-time feedback and virtual walkthroughs.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    <h3>Confident Decisions</h3>
+                    <p>Experience true-to-life spaces to make confident choices about layouts, materials and finishes.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <i class="fa-solid fa-people-arrows"></i>
+                    <h3>Enhanced Collaboration</h3>
+                    <p>Bring together architects, contractors and clients in a shared virtual environment for better communication.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <i class="fa-solid fa-eye"></i>
+                    <h3>Unmatched Clarity</h3>
+                    <p>See spatial relationships, proportions and lighting realistically without relying on imagination.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <i class="fa-solid fa-rocket"></i>
+                    <h3>Future-Proofing</h3>
+                    <p>Position your project at the cutting edge of India's construction technology revolution.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section" id="videos">
+        <div class="container">
+            <h2>Our Vision in VR</h2>
+            <p>Experience how we transform spaces through immersive virtual reality technology</p>
+            
+            <div class="video-options">
+                <button class="video-option-btn active" data-video="ag8J3VoAMss">
+                    <i class="fas fa-home"></i> Company Overview
+                </button>
+                <button class="video-option-btn" data-video="dQw4w9WgXcQ">
+                    <i class="fas fa-vr-cardboard"></i> VR Experience
+                </button>
+                <button class="video-option-btn" data-video="yPYZpwSpKmA">
+                    <i class="fas fa-building"></i> Project Showcase
+                </button>
+            </div>
+            
+            <div class="video-container-wrapper">
+                <div class="video-container">
+                    <div class="video-placeholder" onclick="loadVideo()">
+                        <img src="https://images.unsplash.com/photo-1615529162924-f8605388463e?ixlib=rb-4.0.3" alt="Video thumbnail" class="video-thumbnail">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="video-placeholder-text">Click to play video</div>
+                    </div>
+                    <iframe id="yt-video" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Get In Touch With Us</h2>
+            <p class="text-center" style="margin-bottom: 2rem;">Ready to bring your vision to life? Contact us for a consultation.</p>
+            
+            <div class="contact-container">
+                <div class="contact-form">
+                    <form action="https://formspree.io/f/xzzgayvd" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="_replyto" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="project-type">Project Type</label>
+                            <select id="project-type" name="project-type">
+                                <option value="interior">Interior Design</option>
+                                <option value="construction">Construction</option>
+                                <option value="both">Both</option>
+                                <option value="consultation">Consultation</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="contact-details">
+                        <p><i class="fas fa-envelope"></i> tammalibhanupraakash@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +91 9391255881 | +91 9346145612</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Kondapur, Hydrabad, 505453</p>
+                        <p><i class="fas fa-clock"></i> Mon-Fri: 9AM - 6PM</p>
+                    </div>
+                    
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/lizz.interior/" class="social-icon" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtu.be/ag8J3VoAMss?si=1IcsvxTQm_fpusz3" class="social-icon" target="_blank">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="logo">
+                        <i class="fa-solid fa-vr-cardboard"></i>
+                        <h3>LIZZ <span>INTERIORS</span></h3>
+                    </div>
+                    <p>Pioneering India's design and construction future through immersive Virtual Reality visualization.</p>
+                    <div class="social-links-footer">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://www.instagram.com/lizz.interior/"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://youtu.be/ag8J3VoAMss?si=1IcsvxTQm_fpusz3"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">VR Interior Design</a></li>
+                        <li><a href="#">Complete Construction Visualization</a></li>
+                        <li><a href="#">Design & Build Coordination</a></li>
+                        <li><a href="#">VR Content Creation</a></li>
+                        <li><a href="#">Custom VR Solutions</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#vr-viewer">VR Viewer</a></li>
+                        <li><a href="#videos">Videos</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fa-solid fa-location-dot"></i> Bangalore & Hyderabad</li>
+                        <li><i class="fa-solid fa-phone"></i> +91 9391255881</li>
+                        <li><i class="fa-solid fa-phone"></i>  +91 9346145612</li>
+                        <li><i class="fa-solid fa-envelope"></i> info@lizzinteriors.com</li>
+                        <li><i class="fa-solid fa-clock"></i> Mon-Sat: 9AM - 6PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Lizz Interiors. All Rights Reserved. Pioneering India's Construction Future.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const nav = document.querySelector('nav');
+        
+        mobileToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+        
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                nav.classList.remove('active');
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+        
+        // Video Player Functionality
+        let currentVideoId = 'ag8J3VoAMss';
+        
+        // Initialize video options
+        function initVideoOptions() {
+            const optionButtons = document.querySelectorAll('.video-option-btn');
+            
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelector('.video-option-btn.active').classList.remove('active');
+                    this.classList.add('active');
+                    
+                    // Update current video
+                    currentVideoId = this.dataset.video;
+                    
+                    // Reset video display
+                    const placeholder = document.querySelector('.video-placeholder');
+                    const iframe = document.getElementById('yt-video');
+                    
+                    placeholder.style.display = 'flex';
+                    iframe.style.display = 'none';
+                    iframe.src = '';
+                });
+            });
+        }
+        
+        // Load video function
+        function loadVideo() {
+            const placeholder = document.querySelector('.video-placeholder');
+            const iframe = document.getElementById('yt-video');
+            
+            // Hide placeholder and show iframe
+            placeholder.style.display = 'none';
+            iframe.style.display = 'block';
+            
+            // Set the iframe source with autoplay and mute
+            iframe.src = `https://www.youtube.com/embed/${currentVideoId}?autoplay=1&mute=1&rel=0&modestbranding=1&showinfo=0`;
+            
+            // Track video play (optional)
+            console.log(`Playing video: ${currentVideoId}`);
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', initVideoOptions);
+        
+        // 3D Model Viewer Implementation
+        let scene, camera, renderer, controls;
+        let currentModel = null;
+        const models = {};
+        const modelFiles = {
+            home: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/living_room.glb?v=1678901234567',
+            hall: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/hall.glb?v=1678901234567',
+            bedroom: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/bedroom.glb?v=1678901234567',
+            kitchen: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/kitchen.glb?v=1678901234567'
+        };
+        
+        // Initialize the 3D viewer
+        function init3DViewer() {
+            // Create scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+            
+            // Setup camera
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                document.getElementById('model-viewer').clientWidth / document.getElementById('model-viewer').clientHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.z = 5;
+            
+            // Setup renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(
+                document.getElementById('model-viewer').clientWidth, 
+                document.getElementById('model-viewer').clientHeight
+            );
+            renderer.shadowMap.enabled = true;
+            document.getElementById('model-viewer').innerHTML = '';
+            document.getElementById('model-viewer').appendChild(renderer.domElement);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            directionalLight.castShadow = true;
+            scene.add(directionalLight);
+            
+            // Add orbit controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            
+            // Load all models
+            loadAllModels();
+            
+            // Handle window resize
+            window.addEventListener('resize', onWindowResize);
+            
+            // Start animation loop
+            animate();
+        }
+        
+        // Load all models
+        function loadAllModels() {
+            const loader = new THREE.GLTFLoader();
+            
+            Object.keys(modelFiles).forEach(modelName => {
+                loader.load(
+                    modelFiles[modelName],
+                    (gltf) => {
+                        models[modelName] = gltf.scene;
+                        
+                        // Set common properties
+                        models[modelName].position.set(0, 0, 0);
+                        models[modelName].scale.set(1, 1, 1);
+                        models[modelName].visible = false;
+                        
+                        // Enable shadows for all meshes
+                        models[modelName].traverse((node) => {
+                            if (node.isMesh) {
+                                node.castShadow = true;
+                                node.receiveShadow = true;
+                            }
+                        });
+                        
+                        scene.add(models[modelName]);
+                        
+                        // If this is the home model, make it visible
+                        if (modelName === 'home') {
+                            showModel('home');
+                        }
+                        
+                        // Hide loading message once first model loads
+                        document.querySelector('.loading').style.display = 'none';
+                    },
+                    undefined,
+                    (error) => {
+                        console.error(`Error loading ${modelName}:`, error);
+                        // Create a fallback cube if model fails to load
+                        createFallbackModel(modelName);
+                    }
+                );
+            });
+        }
+        
+        // Create fallback model
+        function createFallbackModel(modelName) {
+            const geometry = new THREE.BoxGeometry(2, 2, 2);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: 0x8B7355,
+                roughness: 0.4,
+                metalness: 0.1
+            });
+            
+            models[modelName] = new THREE.Mesh(geometry, material);
+            models[modelName].position.set(0, 0, 0);
+            models[modelName].visible = false;
+            scene.add(models[modelName]);
+            
+            // If this is the home model, make it visible
+            if (modelName === 'home') {
+                showModel('home');
+            }
+            
+            // Hide loading message
+            document.querySelector('.loading').style.display = 'none';
+        }
+        
+        // Show specific model
+        function showModel(modelName) {
+            if (currentModel) {
+                currentModel.visible = false;
+            }
+            
+            currentModel = models[modelName];
+            currentModel.visible = true;
+            
+            // Adjust camera based on model
+            camera.position.z = modelName === 'home' ? 10 : 5;
+            controls.reset();
+        }
+        
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // Handle window resize
+        function onWindowResize() {
+            camera.aspect = document.getElementById('model-viewer').clientWidth / document.getElementById('model-viewer').clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(
+                document.getElementById('model-viewer').clientWidth,
+                document.getElementById('model-viewer').clientHeight
+            );
+        }
+        
+        // Model navigation buttons
+        document.querySelectorAll('.model-nav button').forEach(button => {
+            button.addEventListener('click', function() {
+                // Update active button
+                document.querySelector('.model-nav button.active').classList.remove('active');
+                this.classList.add('active');
+                
+                // Show selected model
+                const modelName = this.dataset.model;
+                if (models[modelName]) {
+                    showModel(modelName);
+                }
+            });
+        });
+        
+        // Initialize when page loads
+        window.onload = init3DViewer;
+    </script>
+</body>
+</html>
