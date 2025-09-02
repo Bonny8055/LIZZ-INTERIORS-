@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lizz Interiors | VR Design & Construction Visualization</title>
+    <title>Lizz Interiors | Premium VR Design & Construction Visualization</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
     <style>
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #7e22ce;
-            --accent: #06b6d4;
-            --light: #f8fafc;
-            --dark: #0f172a;
-            --gray: #64748b;
-            --light-gray: #e2e8f0;
+            --gold: #D4AF37;
+            --gold-light: #F1E5AC;
+            --gold-dark: #B8860B;
+            --white: #FFFFFF;
+            --off-white: #F8F8F8;
+            --dark: #1A1A1A;
+            --gray: #666666;
+            --light-gray: #E5E5E5;
             --transition: all 0.3s ease;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.07);
         }
         
         * {
@@ -31,15 +31,15 @@
         }
         
         body {
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
             color: var(--dark);
-            background-color: var(--light);
+            background-color: var(--white);
             overflow-x: hidden;
         }
         
         h1, h2, h3, h4, h5 {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 1rem;
@@ -64,8 +64,8 @@
             left: 50%;
             transform: translateX(-50%);
             width: 80px;
-            height: 4px;
-            background: var(--accent);
+            height: 3px;
+            background: var(--gold);
         }
         
         .container {
@@ -77,33 +77,38 @@
         
         .btn {
             display: inline-block;
-            padding: 12px 28px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50px;
+            padding: 14px 32px;
+            background: var(--gold);
+            color: var(--dark);
+            border-radius: 2px;
             text-decoration: none;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             transition: var(--transition);
             border: none;
             cursor: pointer;
             font-size: 0.9rem;
             box-shadow: var(--shadow);
+            font-family: 'Montserrat', sans-serif;
         }
         
         .btn:hover {
-            background: var(--primary-dark);
+            background: var(--gold-dark);
+            color: var(--white);
             transform: translateY(-3px);
             box-shadow: var(--shadow-lg);
         }
         
         .btn-secondary {
-            background: var(--secondary);
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
         }
         
         .btn-secondary:hover {
-            background: #6b21a8;
+            background: var(--gold);
+            color: var(--dark);
         }
         
         /* Header Styles */
@@ -113,9 +118,10 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             transition: var(--transition);
+            border-bottom: 1px solid var(--gold-light);
         }
         
         .header-container {
@@ -130,20 +136,20 @@
             align-items: center;
         }
         
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
         .logo h1 {
             font-size: 1.8rem;
             margin-bottom: 0;
-            color: var(--primary);
+            color: var(--dark);
+            font-weight: 700;
         }
         
         .logo span {
-            color: var(--secondary);
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            color: var(--accent);
-            font-size: 2rem;
+            color: var(--gold);
         }
         
         nav ul {
@@ -152,15 +158,18 @@
         }
         
         nav ul li {
-            margin-left: 2rem;
+            margin-left: 2.5rem;
+            position: relative;
         }
         
         nav ul li a {
             text-decoration: none;
             color: var(--dark);
-            font-weight: 600;
+            font-weight: 500;
             transition: var(--transition);
             position: relative;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
         
         nav ul li a:after {
@@ -170,7 +179,7 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: var(--accent);
+            background: var(--gold);
             transition: var(--transition);
         }
         
@@ -182,22 +191,36 @@
             display: none;
             font-size: 1.5rem;
             cursor: pointer;
+            color: var(--dark);
         }
         
         /* Hero Section */
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3') no-repeat center center/cover;
+            background: linear-gradient(rgba(26, 26, 26, 0.7), rgba(26, 26, 26, 0.7)), url('https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3') no-repeat center center/cover;
             display: flex;
             align-items: center;
-            color: white;
+            color: var(--white);
             text-align: center;
-            padding-top: 70px;
+            padding-top: 80px;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
         }
         
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
         
         .hero h1 {
@@ -217,7 +240,7 @@
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem;
             animation: fadeInUp 1s ease 0.6s forwards;
             opacity: 0;
         }
@@ -227,11 +250,12 @@
             width: 100%;
             height: 70vh;
             position: relative;
-            background: #f0f0f0;
+            background: #f9f9f9;
             margin: 2rem 0;
-            border-radius: 12px;
+            border-radius: 4px;
             overflow: hidden;
             box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gold-light);
         }
         
         .loading {
@@ -240,38 +264,40 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 1.2rem;
-            color: #333;
+            color: var(--gray);
         }
         
         .model-nav {
             display: flex;
             justify-content: center;
             background: var(--dark);
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             gap: 1rem;
             flex-wrap: wrap;
             margin-top: 2rem;
-            border-radius: 8px;
+            border-radius: 4px;
         }
         
         .model-nav button {
             background: none;
             border: none;
-            color: white;
-            padding: 0.8rem 1.5rem;
+            color: var(--white);
+            padding: 1rem 2rem;
             cursor: pointer;
             font-size: 1rem;
             position: relative;
             transition: all 0.3s ease;
-            border-radius: 4px;
+            border-radius: 2px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
         }
         
         .model-nav button:hover {
-            background: rgba(255,255,255,0.1);
+            color: var(--gold);
         }
         
         .model-nav button.active {
-            color: var(--accent);
+            color: var(--gold);
         }
         
         .model-nav button.active::after {
@@ -282,13 +308,13 @@
             transform: translateX(-50%);
             width: 60%;
             height: 2px;
-            background-color: var(--accent);
+            background-color: var(--gold);
         }
         
         /* Services Section */
         .services {
             padding: 6rem 0;
-            background-color: white;
+            background-color: var(--off-white);
         }
         
         .services-grid {
@@ -299,11 +325,12 @@
         }
         
         .service-card {
-            background: white;
-            border-radius: 10px;
+            background: var(--white);
+            border-radius: 4px;
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            border-top: 4px solid var(--gold);
         }
         
         .service-card:hover {
@@ -313,12 +340,24 @@
         
         .service-icon {
             height: 200px;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            background: linear-gradient(to right, var(--dark), var(--gray));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--gold);
             font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-icon::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.2) 100%);
         }
         
         .service-content {
@@ -326,14 +365,31 @@
         }
         
         .service-content h3 {
-            color: var(--primary);
+            color: var(--dark);
             margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .service-content p {
+            color: var(--gray);
         }
         
         /* Why VR Section */
         .why-vr {
             padding: 6rem 0;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            background: var(--white);
+            position: relative;
+        }
+        
+        .why-vr::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(212, 175, 55, 0.03)" stroke-width="1"/></svg>');
+            pointer-events: none;
         }
         
         .benefits-container {
@@ -344,35 +400,48 @@
         }
         
         .benefit-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
+            background: var(--off-white);
+            padding: 2.5rem 2rem;
+            border-radius: 4px;
             box-shadow: var(--shadow);
             text-align: center;
             transition: var(--transition);
+            position: relative;
+            z-index: 1;
+            border-bottom: 3px solid var(--gold);
         }
         
         .benefit-card:hover {
-            transform: scale(1.05);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
         
         .benefit-card i {
             font-size: 3rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefit-card h3 {
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+        
+        .benefit-card p {
+            color: var(--gray);
         }
         
         /* Video Section */
         .video-section {
             padding: 4rem 0;
-            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            background: var(--off-white);
             text-align: center;
         }
         
         .video-section h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            color: var(--primary);
+            color: var(--dark);
             position: relative;
             display: inline-block;
         }
@@ -385,7 +454,7 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background-color: var(--accent);
+            background-color: var(--gold);
         }
         
         .video-options {
@@ -398,37 +467,40 @@
         }
         
         .video-option-btn {
-            background: white;
-            border: 1px solid #ddd;
+            background: var(--white);
+            border: 1px solid var(--gold-light);
             padding: 0.8rem 1.5rem;
-            border-radius: 30px;
+            border-radius: 2px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--dark);
+            font-family: 'Montserrat', sans-serif;
         }
         
         .video-option-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            background: var(--gold);
+            color: var(--dark);
+            border-color: var(--gold);
         }
         
         .video-option-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+            background: var(--gold);
+            color: var(--dark);
+            border-color: var(--gold);
         }
         
         .video-container-wrapper {
             max-width: 1000px;
             margin: 0 auto;
             position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 4px;
             overflow: hidden;
+            border: 1px solid var(--gold-light);
         }
         
         .video-container {
@@ -470,18 +542,19 @@
             z-index: 2;
             width: 80px;
             height: 80px;
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(212, 175, 55, 0.3);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             margin-bottom: 1rem;
+            border: 2px solid var(--gold);
         }
         
         .play-button i {
             font-size: 2rem;
-            color: white;
+            color: var(--white);
             margin-left: 5px;
         }
         
@@ -499,7 +572,7 @@
         
         .video-placeholder:hover .play-button {
             transform: scale(1.1);
-            background-color: rgba(255,255,255,0.3);
+            background-color: rgba(212, 175, 55, 0.5);
         }
         
         #yt-video {
@@ -512,10 +585,70 @@
             display: none;
         }
         
+        /* Projects Section */
+        .projects {
+            padding: 6rem 0;
+            background: var(--white);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .project-card {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            height: 300px;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: var(--white);
+            transition: var(--transition);
+        }
+        
+        .project-overlay h3 {
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .project-overlay p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        
         /* Contact Section */
         .contact {
             padding: 6rem 0;
-            background: white;
+            background: var(--off-white);
         }
         
         .contact-container {
@@ -526,10 +659,11 @@
         }
         
         .contact-form {
-            background-color: var(--light);
-            padding: 2rem;
-            border-radius: 12px;
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 4px;
             box-shadow: var(--shadow);
+            border-top: 4px solid var(--gold);
         }
         
         .form-group {
@@ -547,20 +681,21 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
             font-size: 1rem;
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Montserrat', sans-serif;
             transition: var(--transition);
+            background: var(--off-white);
         }
         
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
-            border-color: var(--primary);
+            border-color: var(--gold);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
         }
         
         .form-group textarea {
@@ -575,7 +710,19 @@
         .contact-info h3 {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            color: var(--primary);
+            color: var(--dark);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .contact-info h3:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--gold);
         }
         
         .contact-details {
@@ -583,14 +730,15 @@
         }
         
         .contact-details p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: flex-start;
             gap: 1rem;
+            color: var(--gray);
         }
         
         .contact-details i {
-            color: var(--accent);
+            color: var(--gold);
             font-size: 1.2rem;
             min-width: 24px;
             margin-top: 4px;
@@ -608,22 +756,24 @@
             justify-content: center;
             width: 50px;
             height: 50px;
-            background: var(--primary);
-            color: white;
+            background: var(--gold);
+            color: var(--dark);
             border-radius: 50%;
             transition: var(--transition);
             font-size: 1.2rem;
+            border: 1px solid var(--gold);
         }
         
         .social-icon:hover {
-            background: var(--secondary);
+            background: transparent;
+            color: var(--gold);
             transform: translateY(-5px);
         }
         
         /* Footer */
         footer {
             background: var(--dark);
-            color: white;
+            color: var(--white);
             padding: 4rem 0 2rem;
         }
         
@@ -635,9 +785,21 @@
         }
         
         .footer-col h3 {
-            color: var(--accent);
+            color: var(--gold);
             margin-bottom: 1.5rem;
             font-size: 1.4rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--gold);
         }
         
         .footer-col ul {
@@ -655,7 +817,7 @@
         }
         
         .footer-col ul li a:hover {
-            color: var(--accent);
+            color: var(--gold);
             padding-left: 5px;
         }
         
@@ -671,14 +833,16 @@
             justify-content: center;
             width: 40px;
             height: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(212, 175, 55, 0.1);
             border-radius: 50%;
-            color: white;
+            color: var(--gold);
             transition: var(--transition);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
         
         .social-links-footer a:hover {
-            background: var(--accent);
+            background: var(--gold);
+            color: var(--dark);
             transform: translateY(-5px);
         }
         
@@ -738,7 +902,7 @@
                 top: 70px;
                 left: 0;
                 width: 100%;
-                background: white;
+                background: var(--white);
                 padding: 1rem;
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
                 clip-path: circle(0% at 100% 0%);
@@ -765,6 +929,11 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .model-nav button {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -773,7 +942,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <i class="fa-solid fa-vr-cardboard"></i>
+                <img src="https://drive.google.com/uc?export=view&id=1rsS3xjYytXueDqNKayN0VEEqtMzXaEeJ" alt="Lizz Interiors Logo">
                 <h1>LIZZ <span>INTERIORS</span></h1>
             </div>
             <div class="mobile-toggle">
@@ -784,6 +953,7 @@
                     <li><a href="#home">Home</a></li>
                     <li><a href="#services">Services</a></li>
                     <li><a href="#vr-viewer">VR Viewer</a></li>
+                    <li><a href="#projects">Projects</a></li>
                     <li><a href="#why-vr">Why VR?</a></li>
                     <li><a href="#videos">Videos</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -796,7 +966,7 @@
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1>See Your Dream Space <span class="highlight">Before</span> It's Built</h1>
+                <h1>See Your Dream Space <span style="color: var(--gold);">Before</span> It's Built</h1>
                 <p>Lizz Interiors leverages cutting-edge Virtual Reality to revolutionize how India designs and builds. We specialize in complete interior design and construction visualization, bringing your vision to life with unprecedented clarity.</p>
                 <div class="hero-btns">
                     <a href="#services" class="btn">Explore Our Services</a>
@@ -847,17 +1017,48 @@
     <!-- VR Model Viewer Section -->
     <section id="vr-viewer" class="container">
         <h2>Experience Our VR Designs</h2>
-        <p class="text-center" style="margin-bottom: 2rem;">Walk through our immersive VR spaces. Select a room to explore:</p>
+        <p class="text-center" style="margin-bottom: 2rem;">Walk through our immersive VR spaces. Select a model to explore:</p>
         
         <div id="model-viewer">
             <div class="loading">Loading 3D Model...</div>
         </div>
         
         <div class="model-nav">
-            <button class="active" data-model="home">Living Room</button>
-            <button data-model="hall">Hall</button>
-            <button data-model="bedroom">Bedroom</button>
-            <button data-model="kitchen">Kitchen</button>
+            <button class="active" data-model="project1">Modern Villa</button>
+            <button data-model="project2">Luxury Apartment</button>
+            <button data-model="project3">Office Space</button>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="container">
+            <h2>Our Premium Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Luxury Villa Project" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Luxury Villa Design</h3>
+                        <p>Complete VR visualization for a 5-bedroom modern villa in Hyderabad</p>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1631889992022-7cf37f3e7fcd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Corporate Office Project" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Corporate Office Space</h3>
+                        <p>VR design for a 10,000 sq ft office with collaborative workspaces</p>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <img src="https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Restaurant Project" class="project-image">
+                    <div class="project-overlay">
+                        <h3>Fine Dining Restaurant</h3>
+                        <p>Immersive VR experience for a premium restaurant interior design</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1021,7 +1222,7 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="logo">
-                        <i class="fa-solid fa-vr-cardboard"></i>
+                        <img src="https://drive.google.com/uc?export=view&id=1rsS3xjYytXueDqNKayN0VEEqtMzXaEeJ" alt="Lizz Interiors Logo" style="height: 40px; margin-right: 10px;">
                         <h3>LIZZ <span>INTERIORS</span></h3>
                     </div>
                     <p>Pioneering India's design and construction future through immersive Virtual Reality visualization.</p>
@@ -1050,6 +1251,7 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#services">Services</a></li>
                         <li><a href="#vr-viewer">VR Viewer</a></li>
+                        <li><a href="#projects">Projects</a></li>
                         <li><a href="#videos">Videos</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
@@ -1099,10 +1301,10 @@
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
                 header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.1)';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.05)';
             } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
             }
         });
         
@@ -1156,18 +1358,19 @@
         let scene, camera, renderer, controls;
         let currentModel = null;
         const models = {};
+        
+        // Replace these URLs with your own 3D model URLs
         const modelFiles = {
-            home: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/living_room.glb?v=1678901234567',
-            hall: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/hall.glb?v=1678901234567',
-            bedroom: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/bedroom.glb?v=1678901234567',
-            kitchen: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/kitchen.glb?v=1678901234567'
+            project1: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/model1.glb?v=1678901234567',
+            project2: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/model2.glb?v=1678901234567',
+            project3: 'https://cdn.glitch.global/7e9fdd1b-7b0b-4b0d-8b0a-8b0b4b0d8b0a/model3.glb?v=1678901234567'
         };
         
         // Initialize the 3D viewer
         function init3DViewer() {
             // Create scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf0f0f0);
+            scene.background = new THREE.Color(0xf9f9f9);
             
             // Setup camera
             camera = new THREE.PerspectiveCamera(
@@ -1237,9 +1440,9 @@
                         
                         scene.add(models[modelName]);
                         
-                        // If this is the home model, make it visible
-                        if (modelName === 'home') {
-                            showModel('home');
+                        // If this is the first model, make it visible
+                        if (modelName === 'project1') {
+                            showModel('project1');
                         }
                         
                         // Hide loading message once first model loads
@@ -1269,9 +1472,9 @@
             models[modelName].visible = false;
             scene.add(models[modelName]);
             
-            // If this is the home model, make it visible
-            if (modelName === 'home') {
-                showModel('home');
+            // If this is the first model, make it visible
+            if (modelName === 'project1') {
+                showModel('project1');
             }
             
             // Hide loading message
@@ -1288,7 +1491,7 @@
             currentModel.visible = true;
             
             // Adjust camera based on model
-            camera.position.z = modelName === 'home' ? 10 : 5;
+            camera.position.z = 8;
             controls.reset();
         }
         
