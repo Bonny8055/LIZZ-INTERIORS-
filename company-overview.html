@@ -1,0 +1,174 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Overview | Lizz Games</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+        --primary-gold: #D4AF37;
+        --rich-gold: #B8860B;
+        --light-gold: #F5E6A8;
+        --dark-gold: #8B7355;
+        --pure-white: #FFFFFF;
+        --cream-white: #FAFAFA;
+        --off-white: #F8F8F8;
+        --charcoal: #2C2C2C;
+        --light-gray: #E8E8E8;
+        --shadow-gold: rgba(212, 175, 55, 0.3);
+        --shadow-dark: rgba(44, 44, 44, 0.1);
+        --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #B8860B 100%);
+        --gradient-premium: linear-gradient(135deg, #F8F8F8 0%, #FFFFFF 50%, #F5E6A8 100%);
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        color: var(--charcoal);
+        background: var(--pure-white);
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        }
+
+        header {
+        background: var(--gradient-gold);
+        color: var(--pure-white);
+        text-align: center;
+        padding: 3rem 1rem;
+        box-shadow: 0 4px 10px var(--shadow-dark);
+        }
+
+        header h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        font-weight: 700;
+        }
+
+        header p {
+        margin-top: 0.5rem;
+        font-size: 1.2rem;
+        }
+
+        .container {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 1rem;
+        }
+
+        .section {
+        margin-bottom: 3rem;
+        padding: 2rem;
+        background: var(--off-white);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px var(--shadow-dark);
+        transition: var(--transition);
+        }
+
+        .section:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px var(--shadow-gold);
+        }
+
+        .section h2 {
+        color: var(--rich-gold);
+        margin-bottom: 1rem;
+        }
+
+        .values {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        }
+
+        .value-box {
+        padding: 1.5rem;
+        background: var(--cream-white);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px var(--shadow-dark);
+        text-align: center;
+        transition: var(--transition);
+        }
+
+        .value-box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px var(--shadow-gold);
+        }
+
+        .value-box i {
+        font-size: 2rem;
+        color: var(--primary-gold);
+        margin-bottom: 1rem;
+        }
+
+        footer {
+        background: var(--charcoal);
+        color: var(--off-white);
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        font-size: 0.9rem;
+        }
+    </style>
+    </head>
+    <body>
+
+    <header>
+    <h1>Company Overview</h1>
+    <p>Building the future with immersive AR & VR experiences</p>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>About Us</h2>
+      <p>
+        At <strong>Lizz Technologies</strong>, we specialize in creating cutting-edge AR and VR solutions 
+        that redefine how people interact with technology. From gaming to enterprise solutions, 
+        our mission is to bring innovation, creativity, and immersive experiences to life.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Our Vision</h2>
+      <p>
+        To be a global leader in immersive technologies, shaping the future of interaction through 
+        creativity, innovation, and meaningful digital experiences.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Our Core Values</h2>
+      <div class="values">
+        <div class="value-box">
+          <i class="fas fa-lightbulb"></i>
+          <h3>Innovation</h3>
+          <p>Pushing the boundaries of technology with fresh and creative ideas.</p>
+        </div>
+        <div class="value-box">
+          <i class="fas fa-users"></i>
+          <h3>Collaboration</h3>
+          <p>Working together with clients and teams to achieve excellence.</p>
+        </div>
+        <div class="value-box">
+          <i class="fas fa-globe"></i>
+          <h3>Impact</h3>
+          <p>Delivering solutions that make a real difference in people’s lives.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Lizz Games. All Rights Reserved.
+  </footer>
+
+</body>
+</html>
